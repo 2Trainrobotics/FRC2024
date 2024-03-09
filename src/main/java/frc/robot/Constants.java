@@ -14,17 +14,24 @@ package frc.robot;
  */
 public final class Constants {
 
-    public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort = 1;
 
+    public static int leftDriveID = 2;
+    public static int leftDriveID2 = 5;
+    public static int rightDriveID = 8;
+    public static int rightDriveID2 = 7;
+    
+    public static class Shooter {
+        public static int LEFT_SHOOTER = 10;
+        public static int RIGHT_SHOOTER = 6;  
 
-    public static final int LEFT1_PORT = 1;
-    public static final int LEFT2_PORT = 1; 
-    public static final int RIGHT1_PORT = 1; 
-    public static final int RIGHT2_PORT = 1; 
-    // public static final int kDriverControllerPort = 0;
-    // public static final int kDriverControllerPort = 0;
-    // public static final int kDriverControllerPort = 0;
+        public static double SHOOTER_SPEED = 0.8;
+        public static double INTAKE_SPEED = 0.5;
+    }
 
-
-
+    public static class Climber {
+        public static int LEFT_CLIMBER = -1;
+        public static int RIGHT_CLIMBER = -1;
+         
+    }
 }
