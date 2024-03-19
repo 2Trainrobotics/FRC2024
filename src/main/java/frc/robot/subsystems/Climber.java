@@ -12,8 +12,8 @@ public class Climber extends SubsystemBase {
     private AbsoluteEncoder leftEncoder;
     
     public Climber() {
-        left = new CANSparkMax(Constants.Climber.LEFT_CLIMBER, MotorType.kBrushless);
-        right = new CANSparkMax(Constants.Climber.RIGHT_CLIMBER, MotorType.kBrushless);
+        left = new CANSparkMax(Constants.Climber.kLeftClimberMotorId, MotorType.kBrushless);
+        right = new CANSparkMax(Constants.Climber.kRightClimberMotorId, MotorType.kBrushless);
 
         right.follow(left);
 

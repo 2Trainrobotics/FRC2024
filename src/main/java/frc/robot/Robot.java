@@ -5,11 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -22,12 +23,13 @@ public class Robot extends TimedRobot {
 
   // private RobotContainer m_robotContainer;
 
-  public CommandXboxController xboxController = new CommandXboxController(Constants.kDriverControllerPort);
+  public XboxController xboxController = new XboxController(0);
 
   Drivetrain drivetrain = new Drivetrain();
   Shooter shooter = new Shooter();
+  Intake intake = new Intake();
 
-  private Command autonomousCommand = drivetrain.drive(() -> 0.25, () -> 0.25);
+  private Command autonomousCommand;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -35,16 +37,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    drivetrain.setDefaultCommand(drivetrain.drive(() -> xboxController.getRawAxis(3), () -> xboxController.getRawAxis(1)));
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     // m_robotContainer = new RobotContainer();
-
-    //this is x on the controller
-    xboxController.button(1).onTrue(shooter.shoot()).onFalse(shooter.stopWheels());
-    //this is a
-    xboxController.button(2).onTrue(shooter.enableIntake()).onFalse(shooter.stopWheels());
-
   }
 
   /**
@@ -76,19 +71,20 @@ public class Robot extends TimedRobot {
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.schedule();
+    // if (autonomousCommand != null) {
+    //   autonomousCommand.schedule();
     // }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    CommandScheduler.getInstance().schedule(autonomousCommand);
+    drivetrain.drive(0.25, 0.25);
   }
 
   @Override
   public void teleopInit() {
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -101,6 +97,31 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    drivetrain.drive(xboxController.getLeftY(), xboxController.getRightY());
+
+    if (xboxController.getYButton()) {
+      intake.extendIntake();
+    } else if (xboxController.getXButton()) {
+      intake.retractIntake();
+    } else {
+      intake.stopIntakeSwing();
+    }
+
+
+    if (xboxController.getAButton()) {
+      intake.intakeRollersIn();
+    } else if (xboxController.getBButton()) {
+      intake.intakeRollersOut();
+    } else {
+      intake.intakeRollersStop();
+    }
+
+
+    if (xboxController.getLeftBumper() || xboxController.getRightBumper()) {
+      shooter.shoot();
+    } else {
+      shooter.stopWheels();
+    }
   }
 
   @Override

@@ -16,22 +16,32 @@ public final class Constants {
 
     public static final int kDriverControllerPort = 1;
 
-    public static int leftDriveID = 2;
-    public static int leftDriveID2 = 5;
-    public static int rightDriveID = 8;
-    public static int rightDriveID2 = 7;
+    public static class Drivetrain {
+        public static int kFrontLeftMotorId = 2;
+        public static int kBackLeftMotorId = 5;
+        public static int kFrontRightMotorId = 8;
+        public static int kBackRightMotorId = 4;
+    }
     
     public static class Shooter {
-        public static int LEFT_SHOOTER = 10;
-        public static int RIGHT_SHOOTER = 6;  
+        public static int kLeftShooterMotorId = 9;
+        public static int kRightShooterMotorId = 3;
 
-        public static double SHOOTER_SPEED = 0.8;
-        public static double INTAKE_SPEED = 0.5;
+        public static double kShooterSpeed = 1.0;
+        public static double kIntakeSpeed = 0.5;
     }
 
+    public static class Intake {
+        public static int kIntakeSwingMotorId = 7;
+        public static int kIntakeRollerMotorId = 6;
+
+        public static double kSwingSpeed = 0.3;
+        public static double kRollerSpeed = 0.5;
+    }
+
+
     public static class Climber {
-        public static int LEFT_CLIMBER = -1;
-        public static int RIGHT_CLIMBER = -1;
-         
+        public static int kLeftClimberMotorId = -1;
+        public static int kRightClimberMotorId = -1;
     }
 }
