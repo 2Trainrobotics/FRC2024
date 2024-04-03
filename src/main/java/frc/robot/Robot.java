@@ -21,9 +21,16 @@ import frc.robot.subsystems.Shooter;
  */
 public class Robot extends TimedRobot {
 
+  enum ControllerScheme {
+    ORIGINAL_FLAVOR,
+    ONE_CONTROLLER,
+    TWO_CONTROLLERS
+  }
+  private ControllerScheme controllerScheme = ControllerScheme.ORIGINAL_FLAVOR;
   // private RobotContainer m_robotContainer;
 
-  public XboxController xboxController = new XboxController(0);
+  public XboxController driverController = new XboxController(0);
+  public XboxController operatorController = new XboxController(1);
 
   Drivetrain drivetrain = new Drivetrain();
   Shooter shooter = new Shooter();
@@ -96,33 +103,102 @@ public class Robot extends TimedRobot {
     }
   }
 
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {
-    drivetrain.drive(xboxController.getLeftY(), xboxController.getRightY());
+  public void teleopOriginalControls() {
+    drivetrain.drive(driverController.getLeftY(), driverController.getRightY());
 
-    if (xboxController.getYButton()) {
+    if (driverController.getYButton()) {
       intake.extendIntake();
-    } else if (xboxController.getXButton()) {
+    } else if (driverController.getXButton()) {
       intake.retractIntake();
     } else {
       intake.stopIntakeSwing();
     }
 
-
-    if (xboxController.getAButton()) {
+    if (driverController.getAButton()) {
       intake.intakeRollersIn();
-    } else if (xboxController.getBButton()) {
+    } else if (driverController.getBButton()) {
       intake.intakeRollersOut();
     } else {
       intake.intakeRollersStop();
     }
 
-
-    if (xboxController.getLeftBumper() || xboxController.getRightBumper()) {
+    if (driverController.getLeftBumper() || driverController.getRightBumper()) {
       shooter.shoot();
     } else {
       shooter.stopWheels();
+    }
+  }
+
+  public void teleopOneController() {
+    drivetrain.drive(driverController.getLeftY(), driverController.getRightY());
+
+    if (driverController.getYButton()) {
+      intake.extendIntake();
+    } else if (driverController.getXButton()) {
+      intake.retractIntake();
+    } else {
+      intake.stopIntakeSwing();
+    }
+
+    if (driverController.getLeftBumper() || driverController.getRightBumper()) {
+      intake.intakeRollersIn();
+      shooter.stopWheels();
+    } else {
+      if (driverController.getLeftTriggerAxis() > 0.3) {
+        intake.intakeRollersOut();
+      } else {
+        intake.intakeRollersStop();
+      }
+      if (driverController.getRightTriggerAxis() > 0.3) {
+        shooter.shoot();
+      } else {
+        shooter.stopWheels();
+      }
+    }
+  }
+
+  public void teleopTwoControllers() {
+    drivetrain.drive(driverController.getLeftY(), driverController.getRightY());
+
+    if (driverController.getYButton() || operatorController.getYButton()) {
+      intake.extendIntake();
+    } else if (driverController.getXButton() || operatorController.getXButton()) {
+      intake.retractIntake();
+    } else {
+      intake.stopIntakeSwing();
+    }
+
+    if (operatorController.getLeftBumper() || operatorController.getRightBumper()) {
+      intake.intakeRollersIn();
+      shooter.stopWheels();
+    } else {
+      if (operatorController.getLeftTriggerAxis() > 0.3) {
+        intake.intakeRollersOut();
+      } else {
+        intake.intakeRollersStop();
+      }
+      if (operatorController.getRightTriggerAxis() > 0.3) {
+        shooter.shoot();
+      } else {
+        shooter.stopWheels();
+      }
+    }
+  }
+
+  /** This function is called periodically during operator control. */
+  @Override
+  public void teleopPeriodic() {
+    switch (controllerScheme) {
+      case ONE_CONTROLLER:
+        teleopOneController();
+        break;
+      case TWO_CONTROLLERS:
+        teleopTwoControllers();
+        break;
+      case ORIGINAL_FLAVOR:
+      default:
+        teleopOriginalControls();
+        break;
     }
   }
 
