@@ -74,12 +74,14 @@ public class Robot extends TimedRobot {
     // if (autonomousCommand != null) {
     //   autonomousCommand.schedule();
     // }
+
+    shooter.shoot();
+    
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    drivetrain.drive(0.25, 0.25);
   }
 
   @Override

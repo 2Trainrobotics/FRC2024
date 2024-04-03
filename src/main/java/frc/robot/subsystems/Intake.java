@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
     private CANSparkMax intakeSwing;
@@ -17,12 +18,12 @@ public class Intake extends SubsystemBase {
     private boolean enableGuards = false;
 
     public Intake() {
-        intakeSwing = new CANSparkMax(Constants.Intake.kIntakeSwingMotorId, MotorType.kBrushless);
+        intakeSwing = new CANSparkMax(Constants.IntakeConstants.kIntakeSwingMotorId, MotorType.kBrushless);
         intakeSwing.setIdleMode(IdleMode.kCoast);
         intakeSwingEncoder = intakeSwing.getEncoder();
         intakeSwingEncoder.setPosition(0);
 
-        intakeRollers = new CANSparkMax(Constants.Intake.kIntakeRollerMotorId, MotorType.kBrushless);
+        intakeRollers = new CANSparkMax(Constants.IntakeConstants.kIntakeRollerMotorId, MotorType.kBrushless);
     }
 
     public void toggleGuard() {
@@ -34,13 +35,13 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putNumber("encoder position", currentPosition);
         SmartDashboard.putString("intakeop", "extend");
         if (enableGuards) {
-            if (currentPosition > -45) {
-                intakeSwing.set(-Constants.Intake.kSwingSpeed);
+            if (currentPosition > IntakeConstants.extendMax) {
+                intakeSwing.set(-Constants.IntakeConstants.kSwingSpeed);
             } else {
                 intakeSwing.set(0);
             }
         } else {
-            intakeSwing.set(-Constants.Intake.kSwingSpeed);
+            intakeSwing.set(-Constants.IntakeConstants.kSwingSpeed);
         }    
         
     }
@@ -50,13 +51,13 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putNumber("encoder position", currentPosition);
         SmartDashboard.putString("intakeop", "retract");
         if (enableGuards){
-            if (currentPosition < -15) {
-                intakeSwing.set(Constants.Intake.kSwingSpeed);
+            if (currentPosition < IntakeConstants.retractMax) {
+                intakeSwing.set(Constants.IntakeConstants.kSwingSpeed);
             } else {
                 intakeSwing.set(0);
             }
         } else {    
-            intakeSwing.set(Constants.Intake.kSwingSpeed);
+            intakeSwing.set(Constants.IntakeConstants.kSwingSpeed);
         }
     }
 
@@ -68,11 +69,11 @@ public class Intake extends SubsystemBase {
     }
 
     public void intakeRollersIn() {
-        intakeRollers.set(-Constants.Intake.kRollerSpeed);
+        intakeRollers.set(-Constants.IntakeConstants.kRollerSpeed);
     }
 
     public void intakeRollersOut() {
-        intakeRollers.set(Constants.Intake.kRollerSpeed);
+        intakeRollers.set(Constants.IntakeConstants.kRollerSpeed);
     }
 
     public void intakeRollersStop() {

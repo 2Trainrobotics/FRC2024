@@ -15,10 +15,10 @@ import frc.robot.Constants;
 public class Drivetrain extends SubsystemBase {
 
 //define your motors & sensors
-CANSparkMax left1  = new CANSparkMax(Constants.Drivetrain.kFrontLeftMotorId, MotorType.kBrushed);
-CANSparkMax left2  = new CANSparkMax(Constants.Drivetrain.kBackLeftMotorId, MotorType.kBrushed);
-CANSparkMax right1 = new CANSparkMax(Constants.Drivetrain.kFrontRightMotorId, MotorType.kBrushed);
-CANSparkMax right2 = new CANSparkMax(Constants.Drivetrain.kBackRightMotorId, MotorType.kBrushed);
+CANSparkMax left1  = new CANSparkMax(Constants.DrivetrainConstants.kFrontLeftMotorId, MotorType.kBrushed);
+CANSparkMax left2  = new CANSparkMax(Constants.DrivetrainConstants.kBackLeftMotorId, MotorType.kBrushed);
+CANSparkMax right1 = new CANSparkMax(Constants.DrivetrainConstants.kFrontRightMotorId, MotorType.kBrushed);
+CANSparkMax right2 = new CANSparkMax(Constants.DrivetrainConstants.kBackRightMotorId, MotorType.kBrushed);
 
 
 private DifferentialDrive drive;
